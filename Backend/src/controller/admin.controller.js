@@ -3,26 +3,29 @@ import { Album } from "../models/album.model.js";
 import cloudinary from '../lib/cloudinary.js'
 
 //helper funciton for cloudinary uplaods
-const uploadToCloudinary = async (file) =>{
-  try {
-    const result = await cloudinary.uploader(file.tempFilePath,{
-      resource_type :"auto"
-    })
 
-    return result.secure_url
-  } catch (error) {
-    console.log("Error in uploadToCloudinary",error)
-    throw new Error("Error uploading to cloudinary")
-  }
-}
+const uploadToCloudinary = async (file) => {
+	try {
+		const result = await cloudinary.uploader.upload(file.tempFilePath, {
+			resource_type: "auto",
+		});
+		return result.secure_url;
+	} catch (error) {
+		console.log("Error in uploadToCloudinary", error);
+		throw new Error("Error uploading to cloudinary");
+	}
+};
 
 
 // creating song
 export const createSong = async (req, res,next) => {
   try {
-    if (!req.files || !req.files.audiofile || !req.files.imageFile) {
+
+
+    if (!req.files || !req.files.audioFile || !req.files.imageFile) {
       return res.status(400).json({ message: "Please upload all files" });
     }
+    
 
     const { title, artist, albumId, duration } = req.body;
 
